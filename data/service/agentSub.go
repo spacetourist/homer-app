@@ -48,11 +48,12 @@ func (hs *AgentsubService) GetAgentsubAgainstGUID(guid string) (string, error) {
 	return reply.String(), nil
 }
 
-// this method gets all users from database
+// GetAgentsubAgainstType gets all users from database
 func (hs *AgentsubService) GetAgentsubAgainstType(typeRequest string) (string, error) {
 	var AgentsubObject []model.TableAgentLocationSession
 	var count int
 
+	// todo could explode "pcap;download" out and extract
 	whereSQL := fmt.Sprintf("expire_date > NOW() AND type LIKE '%%%s%%'", typeRequest)
 
 	if err := hs.Session.Debug().Table("agent_location_session").
@@ -66,6 +67,7 @@ func (hs *AgentsubService) GetAgentsubAgainstType(typeRequest string) (string, e
 		reply.Set("", "data")
 		return reply.String(), fmt.Errorf("no agent subscription object found for type %s", typeRequest)
 	}
+	// todo wouldn't it make more sense to sort by Host?
 	sort.Slice(AgentsubObject[:], func(i, j int) bool {
 		return AgentsubObject[i].GUID < AgentsubObject[j].GUID
 	})
