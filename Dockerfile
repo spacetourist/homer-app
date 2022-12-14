@@ -1,6 +1,6 @@
 FROM node:12-alpine as webapp
 ENV BUILD 20220211-001
-RUN apk add git && git clone https://github.com/sipcapture/homer-ui /app
+RUN apk add git && git clone https://github.com/spacetourist/homer-ui /app
 WORKDIR /app
 RUN npm install && npm install -g @angular/cli && npm run build
 
