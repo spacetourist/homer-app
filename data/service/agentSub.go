@@ -197,7 +197,7 @@ func (hs *AgentsubService) DoSearchByPost(agentObject model.TableAgentLocationSe
 	dataPost := gabs.New()
 	var lookupField string
 
-	logger.Debug("executing DoSearchByPost for type", lookupField, "with agent", agentObject, "and search", searchObject, "producing data", sData)
+	logger.Debug("executing DoSearchByPost for type", typeRequest, "with agent", agentObject, "and search", searchObject, "producing data", sData)
 
 	//if typeRequest == "download" {
 	//	//Data, _ := json.Marshal(searchObject.Param.Search)
