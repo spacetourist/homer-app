@@ -208,6 +208,8 @@ func (hs *AgentsubService) DoSearchByPost(agentObject model.TableAgentLocationSe
 	//	logger.Debug("Download: ", lookupField)
 	//
 	//} else {
+
+	// process the search request(s), arriving "[hepid]_[type]" i.e. "1_call"
 	for key := range sData.ChildrenMap() {
 
 		elemArray := strings.Split(key, "_")
@@ -275,12 +277,12 @@ func (hs *AgentsubService) DoSearchByPost(agentObject model.TableAgentLocationSe
 	serverURL := fmt.Sprintf("%s://%s:%d%s/%s", agentObject.Protocol, agentObject.Host, agentObject.Port, agentObject.Path, typeRequest)
 	serverNODE := agentObject.Node
 
-	logger.Debug("executing DoSearchByPost POST to", serverURL, "with lookup data", lookupField)
+	logger.Debug("executing DoSearchByPost POST to ", serverURL, " with lookup data ", lookupField)
 
 	req, err := http.NewRequest("POST", serverURL, bytes.NewBuffer([]byte(lookupField)))
 
 	if err != nil {
-		logger.Error("Couldn't make a request to agent. Query:", serverURL)
+		logger.Error("Couldn't make a request to agent. Query: ", serverURL)
 		return nil, err
 	}
 
