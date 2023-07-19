@@ -75,6 +75,7 @@ func (hs *AgentsubService) GetAgentsubAgainstType(typeRequest string) (string, e
 	var AgentsubObject []model.TableAgentLocationSession
 	var count int
 
+	// todo could explode "pcap;download" out and extract
 	whereSQL := fmt.Sprintf("expire_date > NOW() AND type LIKE '%%%s%%'", typeRequest)
 
 	if err := hs.Session.Debug().Table("agent_location_session").
@@ -88,6 +89,7 @@ func (hs *AgentsubService) GetAgentsubAgainstType(typeRequest string) (string, e
 		reply.Set("", "data")
 		return reply.String(), fmt.Errorf("no agent subscription object found for type %s", typeRequest)
 	}
+	// todo wouldn't it make more sense to sort by Host?
 	sort.Slice(AgentsubObject[:], func(i, j int) bool {
 		return AgentsubObject[i].GUID < AgentsubObject[j].GUID
 	})
@@ -197,9 +199,14 @@ func (hs *AgentsubService) DoSearchByPost(agentObject model.TableAgentLocationSe
 	sData, _ := gabs.ParseJSON(Data)
 	dataPost := gabs.New()
 
+	logger.Debug("executing DoSearchByPost for type", typeRequest, "with agent", agentObject, "and search", searchObject, "producing data", sData)
+
 	// process the search request(s), arriving "[hepid]_[type]" i.e. "1_call"
 	for key := range sData.ChildrenMap() {
+
 		elemArray := strings.Split(key, "_")
+		logger.Debug(elemArray)
+
 		if len(elemArray) != 2 {
 			return nil, fmt.Errorf("Agent HEPSUB: key is wrong: %d", len(elemArray))
 		}
@@ -255,6 +262,8 @@ func (hs *AgentsubService) DoSearchByPost(agentObject model.TableAgentLocationSe
 
 	serverURL := fmt.Sprintf("%s://%s:%d%s/%s", agentObject.Protocol, agentObject.Host, agentObject.Port, agentObject.Path, typeRequest)
 	serverNODE := agentObject.Node
+
+	logger.Debug("executing DoSearchByPost POST to ", serverURL, " with lookup data ", lookupField)
 
 	req, err := http.NewRequest("POST", serverURL, bytes.NewBuffer([]byte(lookupField)))
 
