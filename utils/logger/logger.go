@@ -43,8 +43,8 @@ func (*GormLogger) Print(v ...interface{}) {
 	}
 }
 
-// initLogger function
-func InitLogger() {
+// InitLogger function
+func InitLogger(level string) {
 
 	//env := os.Getenv("environment")
 	//isLocalHost := env == "local"
@@ -63,6 +63,7 @@ func InitLogger() {
 	}
 
 	/* log level default */
+	globalConfig.Setting.LOG_SETTINGS.Level = level
 	if globalConfig.Setting.LOG_SETTINGS.Level == "" {
 		globalConfig.Setting.LOG_SETTINGS.Level = "error"
 	}

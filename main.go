@@ -329,8 +329,9 @@ func configureLogging() {
 	} else if config.Setting.LOG_SETTINGS.Name == "" {
 		config.Setting.LOG_SETTINGS.Name = "webapp.log"
 	}
-	// initialize logger
-	logger.InitLogger()
+
+	// initialize logger using level defined in config file
+	logger.InitLogger(config.Setting.LOG_SETTINGS.Level)
 }
 
 func configureServiceObjects() {
