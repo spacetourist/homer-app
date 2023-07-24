@@ -76,7 +76,7 @@ func InitLogger(level string) {
 		Logger.SetLevel(logrus.ErrorLevel)
 	}
 
-	Logger.Info("init logging system")
+	Logger.Info("init logging system (level: %s)", level)
 
 	if !globalConfig.Setting.LOG_SETTINGS.Stdout && !globalConfig.Setting.LOG_SETTINGS.SysLog {
 		// configure file system hook
