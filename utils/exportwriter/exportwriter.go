@@ -137,8 +137,8 @@ func (w *Writer) WriteDataToBuffer(h *gabs.Container) error {
 	return err
 }
 
-// WriteDataToBuffer writes a file header out to the writer.
-// This must be called exactly once per output.
+// WriteDataPcapBuffer writes a packet out to the writer.
+// This should be called exactly once for each packet added to the capture file.
 func (w *Writer) WriteDataPcapBuffer(h *gabs.Container) error {
 
 	var capInfo gopacket.CaptureInfo

@@ -906,8 +906,8 @@ func (ss *SearchService) excuteExternalDecoder(dataRecord *gabs.Container) (inte
 	return nil, errors.New("decoder not active. You should not be here")
 }
 
-//this method create new user in the database
-//it doesn't check internally whether all the validation are applied or not
+// GetTransaction create new user in the database
+// it doesn't check internally whether all the validation are applied or not
 func (ss *SearchService) GetTransaction(table string, data []byte, correlationJSON []byte, doexp bool,
 	aliasData map[string]string, typeReport int, nodes []string, settingService *UserSettingsService,
 	userGroup string, whitelist []string) (string, error) {
@@ -923,6 +923,7 @@ func (ss *SearchService) GetTransaction(table string, data []byte, correlationJS
 	timeFrom := time.Unix(int64(timeWhereFrom/float64(time.Microsecond)), 0).UTC()
 	timeTo := time.Unix(int64(timeWhereTo/float64(time.Microsecond)), 0).UTC()
 
+	// retrieve all the relevant SIP packets
 	dataRow, _ := ss.GetTransactionData(table, "sid", dataWhere, timeFrom, timeTo, nodes, userGroup, false, whitelist)
 	marshalData, _ := json.Marshal(dataRow)
 
